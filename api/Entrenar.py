@@ -30,8 +30,8 @@ print('Error cuadrático medio:', mse)
 # predicción ejemplo
 distancia = 50
 diametro = 100
-altura = 150
-litroxminuto = 10
+altura = 90
+litroxminuto = 5
 
 prediction = model.predict([[distancia, diametro, altura, litroxminuto]])
-print('Tiempo de llenado predicho:', prediction)
+print('Tiempo de llenado:', prediction)
