@@ -2,12 +2,13 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sklearn.externals import joblib
-
+import joblib
+import math as mt
+import random
 class Distance(BaseModel):
     data: int
 
-DistanceData = {"data":0}
+DistanceData = {"data":2}
 
 app  = FastAPI()
 
@@ -20,23 +21,26 @@ app.add_middleware(
     allow_headers=["*"],  # Encabezados permitidos
 )
 
-# Lee el archivo CSV y almacena su contenido en un DataFrame
-data = pd.read_csv('dataset.csv')
-
 @app.get("/")
 async def root():
     return {"message": "hello Fastapi"}
 
-# Endpoint de ejemplo
-@app.get("/getMax")
-async def getMinMax():
-    max_distance_cm = data['distance'].max()
-    max_distance_m = max_distance_cm / 100
-    return {"max": round(max_distance_m, 2)}
-
 @app.get("/api/getDistance")
 async def getDistance():
-    return DistanceData
+    #leyendo el modelo
+    modelo = joblib.load('modelo_entrenado.pkl')
+    #datos para la prediccion
+    diametro = [95]
+    altura = [142]
+    litroxminuto = [random.uniform(3.8, 4.4)]
+    volumen = [(mt.pi*((diametro[0]/2)**2)*altura[0])/1000]
+    tiempoTanque = [volumen[0] / litroxminuto[0]]
+    datos_prueba = pd.DataFrame({'distance':[DistanceData['data']], 'diametro':diametro,
+                                'altura':altura, 'volumen_tanque':volumen, 'tiempo_tanque':tiempoTanque})
+
+    prediction = modelo.predict(datos_prueba)
+
+    return {'tiempo': prediction[0], 'distancia':DistanceData['data'], 'litroxminuto':litroxminuto[0]}
 
 @app.post("/api/setDistance")
 async def setDistance(distance:Distance):
