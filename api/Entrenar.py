@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
+from sklearn.externals import joblib
 
 # Cargar el archivo CSV
 data = pd.read_csv('dataset_tiempo.csv')
@@ -34,3 +35,5 @@ r2_test_ajustado
 print("R2          en prueba = {:.5f}".format(r2_test))
 print("R2 ajustado en prueba = {:.5f}".format(r2_test_ajustado))
  
+#Guardar el modelo entrenado
+joblib.dump(model, 'modelo_entrenado.pkl')
