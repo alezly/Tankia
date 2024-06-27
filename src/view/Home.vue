@@ -59,13 +59,33 @@ export default {
       volumen: 0
     }
   },
+  methods: {
+    connectToSocket() {
+      console.log("connectToSocket")
+      this.socket = new WebSocket('ws://localhost:8000/ws');
+      console.log("Daniel")
+      this.socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        this.lastMessage = data.message;
+        console.log(data.message)
+      };
+
+      this.socket.onerror = (error) => {
+        console.error('WebSocket Error: ', error);
+      };
+    },
+  },
+
   components: {
     Cylinder,
     MainCard,
     MainGraficas,
   },
   created(){
-    axios.get(`/getMax`).then((response) => {
+    this.connectToSocket();
+    axios.get(`/getMax`,{
+  withCredentials: true, // Incluye las credenciales en la solicitud
+}).then((response) => {
       const values = [];
       let startValue = 0;
       let endValue = response.data.max;
