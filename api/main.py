@@ -2,6 +2,7 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from sklearn.externals import joblib
 
 class Distance(BaseModel):
     data: int
@@ -41,3 +42,17 @@ async def getDistance():
 async def setDistance(distance:Distance):
     DistanceData["data"] = distance.data
     return "All Ok!"
+
+# @app.get("/prediction")
+# async def cargarModelo():
+#     modelo = joblib.load('modelo_entrenado.pkl')
+
+#     #predicción ejemplo
+#     distancia = 50
+#     diametro = 100
+#     altura = 90
+#     litroxminuto = 5
+
+#     prediction = model.predict([[distancia, diametro, altura, litroxminuto]])
+
+#     print('prediccion', prediction)

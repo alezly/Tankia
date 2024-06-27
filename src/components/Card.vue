@@ -11,7 +11,7 @@
       src="../assets/clock-lines-svgrepo-com.png"
     />
     <img
-      v-if="title == 'Volumen de agua' || title == 'Tiempo de vaciado'"
+      v-if="title == 'Volumen de agua' || title == 'Capacidad máxima general' || title == 'Altura del agua' || title == 'Porcentaje de agua'"
       class="card_img"
       src="../assets/water-drop.png"
     />
