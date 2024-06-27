@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
-    "server": "cd api && uvicorn main:app --reload",
+    "server": "cd api && python main.py",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },

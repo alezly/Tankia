@@ -77,6 +77,7 @@ export default {
       diametro: 95
     }
   },
+
   components: {
     Cylinder,
     MainCard,
@@ -128,6 +129,9 @@ export default {
         this.distancia = response.data.distancia
         this.tiempoEstimado = response.data.tiempo.toFixed(0)
         this.litroxminuto = response.data.litroxminuto.toFixed(0)
+
+        let percentageDistance = this.distancia *100/this.altura
+        document.documentElement.style.setProperty('--nivel-tanque', `${percentageDistance}%`);
       })
     }, 1000);
   }
