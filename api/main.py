@@ -1,6 +1,12 @@
 import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+class Distance(BaseModel):
+    data: int
+
+DistanceData = {"data":0}
 
 app  = FastAPI()
 
@@ -26,3 +32,12 @@ async def getMinMax():
     max_distance_cm = data['distance'].max()
     max_distance_m = max_distance_cm / 100
     return {"max": round(max_distance_m, 2)}
+
+@app.get("/api/getDistance")
+async def getDistance():
+    return DistanceData
+
+@app.post("/api/setDistance")
+async def setDistance(distance:Distance):
+    DistanceData["data"] = distance.data
+    return "All Ok!"

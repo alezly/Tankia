@@ -56,7 +56,8 @@ export default {
   data: function(){
     return {
       rulerValues: [],
-      volumen: 0
+      volumen: 0,
+      distancia:100,
     }
   },
   components: {
@@ -83,10 +84,24 @@ export default {
     }).catch((error) => {
       console.error(error);
     });
+  },
+  mounted(){
+    setInterval(() => {
+      axios.get(`/api/getDistance`).then((response) => {
+        console.log(response.data.data)
+        this.distancia = this.distancia-1
+        document.documentElement.style.setProperty('--nivel-tanque', `${this.distancia}%`);
+      })
+    }, 1000);
   }
 };
 </script>
-<style scoped>
+<style>
+
+:root {
+    --nivel-tanque: 50%;
+}
+
 .container {
   width: 100%;
   height: 100vh;
