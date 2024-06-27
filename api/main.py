@@ -2,7 +2,7 @@ import pandas as pd
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sklearn.externals import joblib
+import joblib
 
 class Distance(BaseModel):
     data: int

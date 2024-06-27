@@ -63,7 +63,7 @@
 import Cylinder from "../components/Cylinder.vue";
 import MainCard from "../components/Card.vue";
 import MainGraficas from "../components/Graficas.vue";
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "HomeView",
@@ -76,22 +76,6 @@ export default {
       altura: 142,
       diametro: 95
     }
-  },
-  methods: {
-    connectToSocket() {
-      console.log("connectToSocket")
-      this.socket = new WebSocket('ws://localhost:8000/ws');
-      console.log("Daniel")
-      this.socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        this.lastMessage = data.message;
-        console.log(data.message)
-      };
-
-      this.socket.onerror = (error) => {
-        console.error('WebSocket Error: ', error);
-      };
-    },
   },
 
   components: {
@@ -140,13 +124,13 @@ export default {
     this.getintervals()
   },
   mounted() {
-    // setInterval(() => {
-    //   axios.get(`/api/getDistance`).then((response) => {
-    //     console.log(response.data.data)
-    //     this.distancia = this.distancia-1
-    //     document.documentElement.style.setProperty('--nivel-tanque', `${this.distancia}%`);
-    //   })
-    // }, 1000);
+    setInterval(() => {
+      axios.get(`/api/getDistance`).then((response) => {
+        console.log(response.data.data)
+        this.distancia = response.data.data *100/this.altura
+        document.documentElement.style.setProperty('--nivel-tanque', `${this.distancia}%`);
+      })
+    }, 1000);
   }
 };
 </script>
