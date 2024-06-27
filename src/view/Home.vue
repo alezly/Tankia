@@ -46,12 +46,12 @@
       <MainCard
         :title="medida == 'liters' ? 'Volumen de agua' : medida == 'cm' ? 'Altura del agua' : 'Porcentaje de agua'"
         :value="`${volumen_agua} ${medida == 'liters' ? 'Litros' : medida == 'cm' ? 'cm' : '%'}`" />
-      <MainCard title="Tiempo de llenado" value="10 segundos" />
+      <MainCard title="Tiempo de llenado" :value="`${tiempoEstimado} minutos`" />
     </div>
     <div class="Data2">
       <MainCard title="Capacidad máxima general"
         :value="`${volumen_tanque} ${medida == 'liters' ? 'Litros' : medida == 'cm' ? 'cm' : '%'}`" />
-      <MainCard title="Tasa de flujo" value="10 segundos" />
+      <MainCard title="Tasa de flujo" :value="`${litroxminuto} litros por minuto`" />
     </div>
     <div class="Dashboar">
       <MainGraficas />
@@ -71,7 +71,7 @@ export default {
     return {
       rulerValues: [],
       volumen: 0,
-      distancia: 71,
+      distancia: 0,
       medida: 'liters',
       altura: 142,
       diametro: 95
@@ -126,9 +126,12 @@ export default {
   mounted() {
     setInterval(() => {
       axios.get(`/api/getDistance`).then((response) => {
-        console.log(response.data.data)
-        this.distancia = response.data.data *100/this.altura
-        document.documentElement.style.setProperty('--nivel-tanque', `${this.distancia}%`);
+        this.distancia = response.data.distancia
+        this.tiempoEstimado = response.data.tiempo.toFixed(0)
+        this.litroxminuto = response.data.litroxminuto.toFixed(0)
+
+        let percentageDistance = this.distancia *100/this.altura
+        document.documentElement.style.setProperty('--nivel-tanque', `${percentageDistance}%`);
       })
     }, 1000);
   }
